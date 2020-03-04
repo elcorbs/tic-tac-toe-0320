@@ -8,7 +8,7 @@ class BoardGateway ():
     return json.loads(board_data)
 
   def empty_board(self):
-    empty_board = '{"1": [null, null, null], "2": [null, null, null], "3": [null, null, null]}'
+    empty_board = '{"0": [null, null, null], "1": [null, null, null], "2": [null, null, null]}'
 
     with open(self.file_path, 'w') as file:
       file.write(empty_board)
@@ -17,7 +17,7 @@ class BoardGateway ():
     with open(self.file_path, 'r') as file:
       board_data = json.loads(file.read())
 
-    board_data[str(y)][x-1] = player
+    board_data[str(y-1)][x-1] = player
 
     with open(self.file_path, 'w') as file:
       file.write(json.dumps(board_data))

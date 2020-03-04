@@ -1,6 +1,7 @@
 class TicTacToe():
-  def __init__(self, board_gateway):
+  def __init__(self, board_gateway, game_checker):
     self.board_gateway = board_gateway
+    self.game_checker = game_checker
 
   def start_game(self):
     self.board_gateway.empty_board()
@@ -9,19 +10,15 @@ class TicTacToe():
   def take_turn(self, x, y):
     self.board_gateway.place_counter(x, y)
     board = self.board_gateway.get_board()
-    state = 'in play'    
-    if self.is_draw(board):
-      state = 'draw'
-    if self.is_won(board):
-      state = 'player ' + board[1][0] + ' won'
+    state = self.get_state(board)
 
     return {'board': board, 'state': state}
 
-  def is_draw(self, board):
-    return None not in board[1] + board[2] + board[3]
+  def get_state(self, board):
+    if self.game_checker.is_draw(board):
+      return 'draw'
+    winner = self.game_checker.who_won(board)
+    if winner:
+      return f'player {winner} won'
 
-  def is_won(self, board):
-    first_row_won = board[1][0] and board[1][0] == board[1][1] == board[1][2]
-    second_row_won = board[2][0] and board[2][0] == board[2][1] == board[2][2]
-    return first_row_won or second_row_won
-
+    return 'in play'
